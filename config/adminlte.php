@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Clinica Medica',
     'title_prefix' => '',
-    'title_postfix' => '',
+    'title_postfix' => 'Starlight',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Starlight</b>MC',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -300,6 +300,40 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'type'         => 'darkmode-widget',
+            'topnav_right' => true, // Or "topnav => true" to place on the left.
+        ],
+        [
+            'text' => 'Painel de Controle',
+            'url'  => 'dashboard',
+            'icon' => 'fas fa-solid fa-tachometer-alt',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Médicos',
+            'url'  => 'admin/doctors',
+            'icon' => 'fas fa-solid fa-stethoscope',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Pacientes',
+            'url'  => 'admin/patients',
+            'icon' => 'fas fa-solid fa-user-injured',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Especialidades',
+            'url'  => 'admin/specialties',
+            'icon' => 'fas fa-solid fa-syringe',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Planos de Saúde',
+            'url'  => 'admin/health_plans',
+            'icon' => 'fas fa-solid fa-briefcase-medical',
+            'topnav' => true,
+        ],
 
         // Sidebar items:
         [
@@ -311,24 +345,24 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
+        // [
+        //     'text'        => 'pages',
+        //     'url'         => 'admin/pages',
+        //     'icon'        => 'far fa-fw fa-file',
+        //     'label'       => 4,
+        //     'label_color' => 'success',
+        // ],
         ['header' => 'account_settings'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
+            'text' => 'Perfil',
+            'url'  => 'admin/profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+        // [
+        //     'text' => 'change_password',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',

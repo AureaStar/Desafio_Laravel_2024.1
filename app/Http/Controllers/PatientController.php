@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\User;
+use App\Models\Health_plan;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 
@@ -13,7 +15,10 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where('user_type', 'patient')->paginate(8);
+        $health_plans = Health_plan::all();
+
+        return view('management', ['users' => $users, 'table' => 'patients', 'health_plans' => $health_plans]);
     }
 
     /**
@@ -21,7 +26,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+        return view('patients_management');
     }
 
     /**
@@ -29,7 +34,9 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        //
+        $patient = Patient::create($request->validated());
+
+        return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
     }
 
     /**
@@ -37,7 +44,9 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        //
+        $user = $patient->user;
+
+        return view('patients_management', ['patient' => $patient, 'user' => $user]);
     }
 
     /**
@@ -45,7 +54,9 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
-        //
+        $user = $patient->user;
+
+        return view('patients_management/edit_patient', ['patient' => $patient, 'user' => $user]);
     }
 
     /**
@@ -53,7 +64,9 @@ class PatientController extends Controller
      */
     public function update(UpdatePatientRequest $request, Patient $patient)
     {
-        //
+        $patient->update($request->validated());
+
+        return redirect()->route('patients.index')->with('success', 'Patient updated successfully.');
     }
 
     /**
@@ -61,6 +74,8 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        //
+        $patient->delete();
+
+        return redirect()->route('patients.index')->with('success', 'Patient deleted successfully.');
     }
 }

@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Doctor;
+use App\Models\User;
+use App\Models\Patient;
+
+class AdminController extends Controller
+{
+    public function view () {
+        $user = auth()->user();
+        $doctors_qtd = Doctor::all()->count();
+        $patients_qtd = Patient::all()->count();
+        return view('dashboard', ['user' => $user, 'doctors_qtd' => $doctors_qtd, 'patients_qtd' => $patients_qtd]);
+    }
+}

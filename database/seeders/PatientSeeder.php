@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Patient;
 use App\Models\User;
+use App\Models\Health_plan;
 use Dflydev\DotAccessData\Data;
 
 class PatientSeeder extends Seeder
@@ -15,6 +16,7 @@ class PatientSeeder extends Seeder
      */
     public function run(): void
     {
+        $healthPlanIds = Health_plan::pluck('id');
         $users = User::factory(30)->create(
             [
                 'user_type' => 'patient',
@@ -26,6 +28,7 @@ class PatientSeeder extends Seeder
             foreach ($userIds as $userid) {
                 Patient::factory()->create(
                     [
+                        'health_plan_id' => $healthPlanIds->random(),
                         'user_id' => $userid,
                     ]
                 );

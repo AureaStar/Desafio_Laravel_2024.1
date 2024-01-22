@@ -1,0 +1,21 @@
+.pagination {
+    padding-bottom: 20px;
+}
+
+.pagination .flex-1 {
+    display: none;
+}
+
+span[aria-current="page"] {
+    display: inline-block;
+    width: fit-content;
+}
+
+span[aria-current="page"] span {
+    box-shadow: 0 0 0 2px #007bff;
+}
+
+.pagination svg {
+    width: 20px;
+    height: 20px;
+}

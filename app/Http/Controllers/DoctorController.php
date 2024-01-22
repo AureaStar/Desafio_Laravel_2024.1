@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\User;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
+use App\Models\Specialty;
 
 class DoctorController extends Controller
 {
@@ -13,9 +15,10 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $dados = Doctor::all();
+        $users = User::where('user_type', 'doctor')->paginate(8);
+        $specialties = Specialty::all();
 
-        return view('index', ['doctors' => $dados]);
+        return view('management', ['users' => $users, 'table' => 'doctors', 'specialties' => $specialties]);
     }
 
     /**
@@ -23,7 +26,7 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        //
+        return view('doctors_management');
     }
 
     /**
@@ -31,7 +34,9 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-        //
+        $doctor = Doctor::create($request->validated());
+
+        return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
 
     /**
@@ -39,7 +44,9 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-        //
+        $user = $doctor->user;
+
+        return view('doctors_management', ['doctor' => $doctor, 'user' => $user]);
     }
 
     /**
@@ -47,7 +54,9 @@ class DoctorController extends Controller
      */
     public function edit(Doctor $doctor)
     {
-        //
+        $user = $doctor->user;
+
+        return view('doctors_management/edit_doctor', ['doctor' => $doctor, 'user' => $user]);
     }
 
     /**
@@ -55,7 +64,9 @@ class DoctorController extends Controller
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        //
+        $doctor->update($request->validated());
+
+        return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }
 
     /**
@@ -63,6 +74,9 @@ class DoctorController extends Controller
      */
     public function destroy(Doctor $doctor)
     {
-        //
+        $doctor->delete();
+        $doctor->user->delete();
+
+        return redirect()->route('doctors.index')->with('success', 'Doctor deleted successfully.');
     }
 }

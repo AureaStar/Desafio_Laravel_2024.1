@@ -33,7 +33,7 @@ class Doctor extends Model
         'work_period' => 'string',
     ];
 
-    public function specialties()
+    public function specialty()
     {
         return $this->belongsTo(Specialty::class);
     }

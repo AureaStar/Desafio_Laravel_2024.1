@@ -8,9 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Doctor;
+use App\Models\Patient;
 
 class ProfileController extends Controller
 {
+
+    public function view()
+    {
+        $user = Auth::user();
+        $doctors_qtd = Doctor::all()->count();
+        $patients_qtd = Patient::all()->count();
+
+        return view('profile', ['user' => $user, 'doctors_qtd' => $doctors_qtd, 'patients_qtd' => $patients_qtd]);
+    }
     /**
      * Display the user's profile form.
      */
