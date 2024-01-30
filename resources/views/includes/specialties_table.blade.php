@@ -3,7 +3,7 @@
 $heads = [
     'ID',
     'Nome',
-    ['label' => 'Valor', 'width' => 40],
+    ['label' => 'Valor (R$)', 'width' => 40],
     ['label' => 'Ações', 'no-export' => true, 'width' => 5],
 ];
 
@@ -27,14 +27,13 @@ $heads = [
         @method('PUT')
         <x-adminlte-input name="name" label="Nome" placeholder="Nome" value="{{ $cell->name }}" />
         <x-adminlte-input name="description" label="Descrição" placeholder="Descrição" value="{{ $cell->description }}" />
-        <x-adminlte-input name="value" label="Valor" placeholder="Valor" value="{{ $cell->value }}" />
+        <x-adminlte-input name="value" label="Valor" placeholder="Valor" value="{{ $cell->value }}" oninput="formatCurrency(this)"/>
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </div>
     </form>
     <x-slot name="footerSlot">
-        <x-adminlte-button theme="danger" label="Excluir" data-toggle="modal" data-target="#destroy{{$cell->id}}" />
     </x-slot>
 </x-adminlte-modal>
 
@@ -46,6 +45,6 @@ $heads = [
 
 <x-adminlte-input name="name" label="Nome" placeholder="Nome" />
 <x-adminlte-input name="description" label="Descrição" placeholder="Descrição" />
-<x-adminlte-input name="value" label="Valor" placeholder="Valor" />
+<x-adminlte-input name="value" label="Valor" placeholder="Valor" oninput="formatCurrency(this)" />
 
 @endsection

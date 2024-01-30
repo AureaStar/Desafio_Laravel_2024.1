@@ -15,13 +15,15 @@ class Doctor extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'adress',
+        'address',
         'phone',
         'birth_date',
         'cpf',
         'work_period',
         'crm',
         'image',
+        'specialty_id',
+        'user_id',
     ];
 
     /**

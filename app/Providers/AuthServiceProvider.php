@@ -3,6 +3,13 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Policies\PatientPolicy;
+use App\Policies\DoctorPolicy;
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        Patient::class => PatientPolicy::class,
+        Doctor::class => DoctorPolicy::class,
     ];
 
     /**
@@ -21,6 +29,18 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        Gate::define('admin', function ($user) {
+            return $user->user_type === 'admin';
+        });
+
+        Gate::define('doctor', function ($user) {
+            return $user->user_type === 'doctor';
+        });
+
+        Gate::define('patient', function ($user) {
+            return $user->user_type === 'patient';
+        });
     }
 }

@@ -46,6 +46,6 @@ $heads = [
 
 <x-adminlte-input name="name" label="Nome" placeholder="Nome" />
 <x-adminlte-input name="description" label="Descrição" placeholder="Descrição" />
-<x-adminlte-input name="discount" label="Desconto" placeholder="Desconto" />
+<x-adminlte-input name="discount" label="Desconto" placeholder="Desconto" oninput="formatPercentage(this)" />
 
 @endsection

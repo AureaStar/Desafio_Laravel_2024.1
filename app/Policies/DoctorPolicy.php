@@ -29,7 +29,7 @@ class DoctorPolicy
      */
     public function create(User $user): bool
     {
-        return $user->user_type === 'admin';
+        return ($user->user_type === 'admin');
     }
 
     /**

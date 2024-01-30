@@ -12,6 +12,6 @@ class AdminController extends Controller
         $user = auth()->user();
         $doctors_qtd = Doctor::all()->count();
         $patients_qtd = Patient::all()->count();
-        return view('dashboard', ['user' => $user, 'doctors_qtd' => $doctors_qtd, 'patients_qtd' => $patients_qtd]);
+        return view('management', ['user' => $user, 'doctors_qtd' => $doctors_qtd, 'patients_qtd' => $patients_qtd, 'table' => 'dashboard']);
     }
 }

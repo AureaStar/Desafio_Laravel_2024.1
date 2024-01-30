@@ -27,9 +27,9 @@ class PatientPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Patient $patient): bool
+    public function create(User $user): bool
     {
-        return $user->user_type === 'admin' || $user->id === $patient->user_id;
+        return $user->user_type === 'admin';
     }
 
     /**

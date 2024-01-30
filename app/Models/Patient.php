@@ -22,6 +22,8 @@ class Patient extends Model
         'image',
         'blood_type',
         'registration_status',
+        'health_plan_id',
+        'user_id',
     ];
 
     /**

@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -253,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -305,34 +309,44 @@ return [
             'topnav_right' => true, // Or "topnav => true" to place on the left.
         ],
         [
-            'text' => 'Painel de Controle',
-            'url'  => 'dashboard',
+            'text' => '',
+            'url'  => 'admin',
             'icon' => 'fas fa-solid fa-tachometer-alt',
             'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'admin',
         ],
         [
-            'text' => 'Médicos',
+            'text' => '',
             'url'  => 'admin/doctors',
             'icon' => 'fas fa-solid fa-stethoscope',
             'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'admin',
         ],
         [
-            'text' => 'Pacientes',
+            'text' => '',
             'url'  => 'admin/patients',
             'icon' => 'fas fa-solid fa-user-injured',
             'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'admin',
         ],
         [
-            'text' => 'Especialidades',
+            'text' => '',
             'url'  => 'admin/specialties',
             'icon' => 'fas fa-solid fa-syringe',
             'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'admin',
         ],
         [
-            'text' => 'Planos de Saúde',
+            'text' => '',
             'url'  => 'admin/health_plans',
             'icon' => 'fas fa-solid fa-briefcase-medical',
             'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'admin',
         ],
 
         // Sidebar items:
@@ -355,7 +369,7 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'Perfil',
-            'url'  => 'admin/profile',
+            'url'  => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         // [
@@ -364,58 +378,45 @@ return [
         //     'icon' => 'fas fa-fw fa-lock',
         // ],
         [
-            'text'    => 'multilevel',
+            'text'    => 'Páginas',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Página Inicial',
+                    'url'  => 'admin',
+                    'can' => 'admin',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Médicos',
+                    'url'  => 'admin/doctors',
+                    'can' => 'admin',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Pacientes',
+                    'url'  => 'admin/patients',
+                    'can' => 'admin',
                 ],
+                [
+                    'text' => 'Especialidades',
+                    'url'  => 'admin/specialties',
+                    'can' => 'admin',
+                ],
+                [
+                    'text' => 'Planos de Saúde',
+                    'url'  => 'admin/health_plans',
+                    'can' => 'admin',
+                ],
+                [
+                    'text' => 'Consultas',
+                    'url'  => 'doctors/appointments',
+                    'can' => 'doctor',
+                ],
+                [
+                    'text' => 'Consultas',
+                    'url'  => 'patients/appointments',
+                    'can' => 'patient',
+                ]
             ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
         ],
     ],
 

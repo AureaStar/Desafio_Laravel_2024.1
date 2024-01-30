@@ -1,7 +1,8 @@
 <div class="box">
     <div class="box-header" style="display: flex; justify-content: space-between; padding: 10px 5px;">
-        <h3 class="box-title inline" style="width: fit-content;">Gerenciamento de {{$title}}</h3>
-        <x-adminlte-button label="Adicionar {{$title}}" class="btn btn-inline" data-toggle="modal" data-target="#add" theme="success" icon="fas fa-plus" />
+        <h3 class="box-title inline text-md text-xl text-2xl-md" style="width: fit-content;">Gerenciamento de {{$title}}</h3>
+
+        <x-adminlte-button label="Adicionar {{$title}}" class="btn btn-inline btn-sm btn-md" data-toggle="modal" data-target="#add" theme="success" icon="fas fa-plus" />
     </div>
     <div class="box-body">
         <x-adminlte-datatable id="table1" :heads="$heads">
@@ -9,13 +10,13 @@
                 @foreach ($data as $cell)
                 <tr>
                     @if($table === 'users')
-                        <td>{{ $cell->$type->id }}</td>
-                        <td>{{ $cell->name }}</td>
-                        <td>{{ $cell->$type->$extra_info->name }}</td>
+                    <td>{{ $cell->$type->id }}</td>
+                    <td>{{ $cell->name }}</td>
+                    <td>{{ $cell->$type->$extra_info->name }}</td>
                     @else
-                        <td>{{ $cell->id }}</td>
-                        <td>{{ $cell->name }}</td>
-                        <td>{{ $cell->$extra_info }}</td>
+                    <td>{{ $cell->id }}</td>
+                    <td>{{ $cell->name }}</td>
+                    <td>{{ $cell->$extra_info }}</td>
                     @endif
                     <td>
                         <nobr>
@@ -59,6 +60,10 @@
                     <form action="{{ route($route . '.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @yield('create_form_inputs')
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Adicionar</button>
+                        </div>
                     </form>
                     <x-slot name="footerSlot">
                     </x-slot>
@@ -71,31 +76,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function formatarCpf(campo) {
-        let valor = campo.value.replace(/\D/g, '');
-        if (valor.length > 3) {
-            valor = valor.substring(0, 3) + '.' + valor.substring(3);
-        }
-        if (valor.length > 7) {
-            valor = valor.substring(0, 7) + '.' + valor.substring(7);
-        }
-        if (valor.length > 11) {
-            valor = valor.substring(0, 11) + '-' + valor.substring(11);
-        }
-
-        campo.value = valor;
-    }
-
-    function formatarTelefone(campo) {
-        let valor = campo.value.replace(/\D/g, '');
-        if (valor.length > 2) {
-            valor = '(' + valor.substring(0, 2) + ') ' + valor.substring(2);
-        }
-        if (valor.length > 10) {
-            valor = valor.substring(0, 10) + '-' + valor.substring(10);
-        }
-        campo.value = valor;
-    }
-</script>

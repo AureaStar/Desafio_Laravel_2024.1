@@ -14,6 +14,11 @@ class HealthPlanSeeder extends Seeder
     public function run(): void
     {
         Health_plan::factory()->create([
+            'name' => 'Sem plano',
+            'description' => 'Sem plano de saúde',
+            'discount' => '0.00'
+        ]);
+        Health_plan::factory()->create([
             'name' => 'Unimed',
             'description' => 'Plano de saúde Unimed',
             'discount' => '10.00'

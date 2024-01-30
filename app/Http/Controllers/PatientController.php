@@ -34,9 +34,33 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        $patient = Patient::create($request->validated());
 
-        return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
+        $this->authorize('create', Patient::class);
+
+        $validatedData = $request->validated();
+
+        // Criar o usuário
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'user_type' => 'patient',
+        ]);
+
+        // Criar o paciente
+        $patient = Patient::create([
+            'user_id' => $user->id,
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone'],
+            'health_plan_id' => $request->health_plan_id,
+            'birth_date' => $validatedData['birth_date'],
+            'cpf' => $validatedData['cpf'],
+            'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/patient.png',
+            'blood_type' => $validatedData['blood_type'],
+            'registration_status' => 'complete',
+        ]);
+
+        return redirect()->back()->with('success', 'Patient created successfully.');
     }
 
     /**
@@ -77,5 +101,12 @@ class PatientController extends Controller
         $patient->delete();
 
         return redirect()->route('patients.index')->with('success', 'Patient deleted successfully.');
+    }
+
+    public function appointments(Patient $patient)
+    {
+        $user = $patient->user;
+
+        return view('appointments', ['user' => $user, 'appointments' => $patient->appointments]);
     }
 }
