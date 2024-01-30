@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\User;
-use App\Models\Patient;
+use App\Models\{Doctor, Patient};
 
 class AdminController extends Controller
 {

@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Support\Facades\{Auth, Redirect};
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\Doctor;
-use App\Models\Patient;
-use App\Models\Health_plan;
+use App\Models\{Doctor, Patient, Health_plan, Specialty};
 
 class ProfileController extends Controller
 {
@@ -23,7 +19,12 @@ class ProfileController extends Controller
         $patients_qtd = Patient::all()->count();
         $type = $user->user_type;
 
-        return view('profile', ['user' => $user, 'doctors_qtd' => $doctors_qtd, 'patients_qtd' => $patients_qtd, 'type' => $type]);
+        return view('profile', [
+            'user' => $user, 
+            'doctors_qtd' => $doctors_qtd, 
+            'patients_qtd' => $patients_qtd, 
+            'type' => $type
+        ]);
     }
 
     /**
@@ -32,9 +33,15 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $health_plans = Health_plan::all();
+        $specialties = Specialty::all();
+
+        $user = $request->user();
+
         return view('profile.edit', [
-            'user' => $request->user(),
-            'health_plans' => $health_plans
+            'user' => $user,
+            'health_plans' => $health_plans,
+            'specialties' => $specialties,
+            'type' => $user->user_type
         ]);
     }
 
