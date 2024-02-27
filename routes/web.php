@@ -1,13 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\SpecialtyController;
-use App\Http\Controllers\HealthPlanController;
+use App\Http\Controllers\{AdminController, AppointmentController, DoctorController, HealthPlanController, PatientController, PatientProfileController, ProfileController, SpecialtyController, DoctorProfileController};
+use App\Models\Appointment;
 use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,57 +16,93 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect(route('dashboard'));
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+
+    Route::get('', function () {
+        if (auth()->user()->user_type === 'admin') {
+            return redirect(route('admin.index'));
+        }
+        elseif (auth()->user()->user_type === 'doctor') {
+            return redirect(route('doctor.appointments'));
+        }
+        elseif (auth()->user()->user_type === 'patient') {
+            return redirect(route('patients.appointments.index'));
+        }
+    });
 
     Route::get('/dashboard/doctors', [DoctorController::class, 'dashboard'])
         ->name('dashboard.doctors');
 
     Route::get('/dashboard/patients', [PatientController::class, 'dashboard'])
         ->name('dashboard.patients');
-
 });
 
 Route::middleware('auth')->group(function () {
 
-    // Rotas de Perfil
+    
+});
 
-    Route::get('/profile', [ProfileController::class, 'view'])
-        ->name('profile.view');
+// Rotas de Médicos
 
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+Route::middleware(['auth', 'verified', 'doctor'])->group(function () {
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::get('/doctor', function () {
+        return redirect(route('doctor.appointments'));
+    });
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::get('/doctor/profile', [DoctorProfileController::class, 'view'])
+       ->name('doctor.profile');
 
-    // Rotas de Consultas
+    Route::get('/doctor/profile/edit', [DoctorProfileController::class, 'edit'])
+       ->name('doctor.edit');
 
-    Route::get('/doctors/appointments', [DoctorController::class, 'appointments'])
-        ->name('doctors.appointments');
+    Route::patch('/doctor/profile', [DoctorProfileController::class, 'update'])
+       ->name('doctor.update');
+
+    Route::get('/doctor/appointments', [DoctorController::class, 'appointments'])
+        ->name('doctor.appointments');
 
     Route::get('/appointments/report', [AppointmentController::class, 'report'])
         ->name('appointments.report');
+});
 
-    Route::get('/patients/appointments', [PatientController::class, 'appointments'])
+// Rotas de Pacientes
+
+Route::middleware(['auth', 'verified', 'patient'])->group(function () {
+
+    Route::get('/patient', function () {
+        return redirect(route('patients.appointments.index'));
+    });
+
+    Route::get('/patient/profile', [PatientProfileController::class, 'view'])
+        ->name('patient.profile');
+
+    Route::get('/patient/profile/edit', [PatientProfileController::class, 'edit'])
+        ->name('patient.edit');
+
+    Route::patch('/patient/profile', [PatientProfileController::class, 'update'])
+        ->name('patient.update');
+
+    Route::get('/patients/appointments/view', [PatientController::class, 'appointments'])
         ->name('patients.appointments');
 
+    Route::post('/appointments/create', [AppointmentController::class, 'create'])
+        ->name('patients.appointments.create');
+
+    Route::resource('/patients/appointments', AppointmentController::class)
+        ->only(['index', 'store', 'destroy'])->names([
+            'index' => 'patients.appointments.index',
+            'store' => 'patients.appointments.store',
+            'destroy' => 'patients.appointments.destroy',
+        ]);
 });
 
 // Rotas Administrativas
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 
-    Route::get('/admin', [AdminController::class, 'index'])
+    Route::get('/admin', [AdminController::class, 'view'])
         ->name('admin.index');
 
     Route::resource('/admin/appointments', AppointmentController::class);
@@ -80,4 +112,4 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::resource('/admin/health_plans', HealthPlanController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

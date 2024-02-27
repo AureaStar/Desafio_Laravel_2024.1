@@ -348,6 +348,38 @@ return [
             'classes' => 'd-md-block d-none',
             'can' => 'admin',
         ],
+        [
+            'text' => '',
+            'url'  => 'doctors/appointments',
+            'icon' => 'fas fa-solid fa-calendar-check',
+            'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'doctor',
+        ],
+        [
+            'text' => '',
+            'url'  => 'patients/appointments',
+            'icon' => 'fas fa-solid fa-calendar-check',
+            'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'patient',
+        ],
+        [
+            'text' => '',
+            'url'  => 'doctor/profile',
+            'icon' => 'fas fa-solid fa-user',
+            'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'doctor',
+        ],
+        [
+            'text' => '',
+            'url'  => 'patient/profile',
+            'icon' => 'fas fa-solid fa-user',
+            'topnav' => true,
+            'classes' => 'd-md-block d-none',
+            'can' => 'patient',
+        ],
 
         // Sidebar items:
         [
@@ -369,8 +401,15 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'Perfil',
-            'url'  => 'profile',
+            'url'  => 'doctor/profile',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'doctor',
+        ],
+        [
+            'text' => 'Perfil',
+            'url'  => 'patient/profile',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => 'patient',
         ],
         // [
         //     'text' => 'change_password',
