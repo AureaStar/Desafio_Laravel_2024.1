@@ -22,7 +22,7 @@ class Health_planPolicy
      */
     public function view(User $user, Health_plan $healthPlan, Patient $patient): bool
     {
-        return $user->user_type === 'admin' || ($user->id === $patient->user_id && $patient->health_plan_id === $healthPlan->id);
+        return $user->user_type === 'admin' || ($user->user_type === 'patient' && $patient->health_plan_id === $healthPlan->id);
     }
 
     /**

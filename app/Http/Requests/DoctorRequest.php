@@ -22,6 +22,12 @@ class DoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
+            //User
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+
+            //Doctor
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'birth_date' => 'required|date',

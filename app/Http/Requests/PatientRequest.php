@@ -32,7 +32,7 @@ class PatientRequest extends FormRequest
             'phone' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'cpf' => 'required|string|max:14|unique:patients,cpf',
-            'image' => 'string|max:255',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'blood_type' => 'required|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         ];
     }
