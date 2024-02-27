@@ -19,6 +19,10 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        h3 {
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -42,29 +46,30 @@
         </header>
         <main>
             <h2>Consultas Realizadas</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mês</th>
-                        <th>Paciente</th>
-                        <th>Especialidade</th>
-                        <th>Data</th>
-                        <th>Custo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($appointments as $appointment)
+            @foreach ($appointmentsByMonth as $month => $appointments)
+                <h3>{{$month}}</h3>
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{date('m/Y', strtotime($appointment->procedure_start))}}</td>
-                            <td>{{$appointment->patient->user->name}}</td>
-                            <td>{{$appointment->specialty->name}}</td>
-                            <td>{{date('d/m/Y', strtotime($appointment->procedure_start))}}</td>
-                            <td>R$ {{$appointment->price}}</td>
+                            <th>Paciente</th>
+                            <th>Especialidade</th>
+                            <th>Data</th>
+                            <th>Custo</th>
                         </tr>
-                        
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($appointments as $appointment)
+                            <tr>
+                                <td>{{$appointment->patient->user->name}}</td>
+                                <td>{{$appointment->specialty->name}}</td>
+                                <td>{{date('d/m/Y', strtotime($appointment->procedure_start))}}</td>
+                                <td>R$ {{$appointment->price}}</td>
+                            </tr>
+                            
+                        @endforeach
+                    </tbody>
+                </table>
+            @endforeach
         </main>
     </div>
 </body>

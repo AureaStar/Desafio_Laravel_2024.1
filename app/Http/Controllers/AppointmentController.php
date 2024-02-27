@@ -102,15 +102,21 @@ class AppointmentController extends Controller
 
     public function report()
     {
+        Carbon::setLocale('pt_BR');
         $user = auth()->user();
-        $now = Carbon::now()->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i:s');
+        $now = Carbon::now()->setTimezone('America/Sao_Paulo')->format('Y-m-d H:i:s');
         $appointments = $user->doctor->appointments()
             ->where('procedure_end', '<', $now)
             ->get();
+        $appointmentsByMonth = $appointments->groupBy(function ($appointment) {
+            return Carbon::parse($appointment->procedure_start)->isoFormat('MMMM YYYY');
+        });
+        $datetime = Carbon::now()->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i:s');
         $pdf = Pdf::loadView('doctor/appointments_report', [
             'user' => $user,
             'appointments' => $appointments,
-            'datetime' => $now
+            'appointmentsByMonth' => $appointmentsByMonth,
+            'datetime' => $datetime
         ]);
         return $pdf->stream();
     }
