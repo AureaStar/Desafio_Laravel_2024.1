@@ -14,7 +14,7 @@ class HealthPlanController extends Controller
         
         $health_plans = Health_plan::paginate(8);
 
-        return view('management', ['health_plans' => $health_plans, 'table' => 'health_plans']);
+        return view('admin/health_plans', ['health_plans' => $health_plans, 'table' => 'health_plans']);
     }
 
     /**
@@ -22,9 +22,9 @@ class HealthPlanController extends Controller
      */
     public function store(HealthPlanRequest $request) {
 
-        $this->formatDiscount($request);
+        $request['discount'] = floatval($request['discount']);
 
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
         Health_plan::create($validatedData);
 
@@ -38,9 +38,9 @@ class HealthPlanController extends Controller
      */
     public function update(HealthPlanRequest $request, Health_plan $health_plan) {
 
-        $this->formatDiscount($request);
+        $request['discount'] = floatval($request['discount']);
 
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
         $health_plan->update($validatedData);
 
@@ -67,12 +67,5 @@ class HealthPlanController extends Controller
         return redirect()
             ->route('health_plans.index')
             ->with('success', 'Plano de Saúde excluído com sucesso!');
-    }
-
-    public function formatDiscount($request): void
-    {
-        $formattedValue = preg_replace('/[^\d,]/', '', $request->input('discount'));
-        $numericValue = str_replace(',', '.', $formattedValue);
-        $request->merge(['discount' => $numericValue]);
     }
 }

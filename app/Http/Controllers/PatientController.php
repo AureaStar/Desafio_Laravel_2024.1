@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Patient, User, Health_plan};
+use App\Models\{Patient, User, Health_plan, Specialty};
 use Illuminate\Http\Request;
-use App\Http\Requests\{PatientRequest, UserRequest};
+use App\Http\Requests\{PatientRequest, UserRequest, UpdatePatientRequest};
 
 class PatientController extends Controller
 {
@@ -17,7 +17,7 @@ class PatientController extends Controller
 
         $health_plans = Health_plan::all();
 
-        return view('management', [
+        return view('admin/patients', [
             'users' => $users, 
             'table' => 'patients', 
             'health_plans' => $health_plans
@@ -27,14 +27,39 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PatientRequest $request)
     {
 
         $this->authorize('create', Patient::class);
 
-        $user = $this->storeUser($request);
+        $validatedData = $request->validated();
 
-        $this->storePatient($request, $user);
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension(); // Gera um nome único para o arquivo
+            $imagePath = 'storage/' . $request->file('image')->storeAs('assets/images', $imageName, 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        // Criar o usuário
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'user_type' => 'patient',
+        ]);
+
+        // Criar o paciente
+        $patient = Patient::create([
+            'user_id' => $user->id,
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone'],
+            'health_plan_id' => $request->health_plan_id,
+            'birth_date' => $validatedData['birth_date'],
+            'cpf' => $validatedData['cpf'],
+            'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/patient.png',
+            'blood_type' => $validatedData['blood_type'],
+            'registration_status' => 'complete',
+        ]);
 
         return redirect()
             ->back()
@@ -42,62 +67,37 @@ class PatientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function storeUser (UserRequest $request) {
-
-        $validatedData = $request->validated();
-
-        $user = User::create($validatedData, [
-                'password' => bcrypt($validatedData['password']),
-                'user_type' => 'patient',
-            ]
-        );
-
-        return $user;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function storePatient (PatientRequest $request, User $user) {
-
-        $validatedData = $request->validated();
-
-        $patient = Patient::create($validatedData, [
-                'user_id' => $user->id,
-                'health_plan_id' => $request->health_plan_id,
-                'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/patient.png',
-                'registration_status' => 'complete',
-            ]
-        );
-
-        return $patient;
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Patient $patient)
-    {
-        $user = $patient->user;
-
-        return view('patients_management', [
-            'patient' => $patient, 
-            'user' => $user
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Patient $patient)
+    public function update(UpdatePatientRequest $request, Patient $patient)
     {
         $this->authorize('update', $patient);
 
-        $this->updateUser($request, $patient);
+        $validatedData = $request->validated();
 
-        $this->updatePatient($request, $patient);
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension(); // Gera um nome único para o arquivo
+            $imagePath = 'storage/' . $request->file('image')->storeAs('assets/images', $imageName, 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        $user = $patient->user;
+
+        $user->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'] ? bcrypt($validatedData['password']) : $user->password,
+        ]);
+
+        $patient->update([
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone'],
+            'health_plan_id' => $request->health_plan_id ? $request->health_plan_id : $patient->health_plan_id,
+            'birth_date' => $validatedData['birth_date'],
+            'cpf' => $validatedData['cpf'],
+            'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/patient.png',
+            'blood_type' => $validatedData['blood_type'],
+        ]);
 
         return redirect()
             ->route('patients.index')
@@ -105,50 +105,29 @@ class PatientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function updatePatient (PatientRequest $request, Patient $patient) {
-
-        $validatedData = $request->validated();
-
-        $patient->update($validatedData, [
-                'health_plan_id' => $request->health_plan_id,
-                'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/patient.png',
-            ]
-        );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function updateUser (UserRequest $request, Patient $patient) {
-
-        $validatedData = $request->validated();
-
-        $patient->user->update($validatedData, [
-                'password' => bcrypt($validatedData['password']),
-            ]
-        );
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Patient $patient)
     {
+        $this->authorize('delete', $patient);
+
+        $user = $patient->user;
         $patient->delete();
+        $user->delete();
 
         return redirect()
             ->route('patients.index')
             ->with('success', 'Patient deleted successfully.');
     }
 
-    public function appointments(Patient $patient)
+    public function appointments()
     {
-        $user = $patient->user;
+        $user = auth()->user();
+        $patient = $user->patient;
 
-        return view('appointments', [
+        return view('patient/appointments', [
             'user' => $user, 
+            'specialties' => Specialty::all(),
             'appointments' => $patient->appointments
         ]);
     }

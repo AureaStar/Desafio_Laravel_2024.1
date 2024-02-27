@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Doctor, User, Specialty};
-use App\Http\Requests\{DoctorRequest, UserRequest};
+use App\Http\Requests\{DoctorRequest, UpdateDoctorRequest, UserRequest};
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
@@ -17,7 +17,7 @@ class DoctorController extends Controller
 
         $specialties = Specialty::all();
 
-        return view('management', [
+        return view('admin/doctors', [
             'users' => $users,
             'table' => 'doctors',
             'specialties' => $specialties
@@ -27,14 +27,37 @@ class DoctorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DoctorRequest $request)
     {
-
         $this->authorize('create', Doctor::class);
 
-        $user = $this->storeUser($request);
+        $validatedData = $request->validated();
 
-        $this->storeDoctor($request, $user);
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension(); // Gera um nome único para o arquivo
+            $imagePath = 'storage/' . $request->file('image')->storeAs('assets/images', $imageName, 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+         // Criar o usuário
+         $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'user_type' => 'doctor',
+        ]);
+
+        // Criar o médico
+        $doctor = Doctor::create([
+            'user_id' => $user->id,
+            'address' => $validatedData['address'],
+            'birth_date' => $validatedData['birth_date'],
+            'cpf' => $validatedData['cpf'],
+            'crm' => $validatedData['crm'],
+            'phone' => $validatedData['phone'],
+            'specialty_id' => $request->specialty,
+            'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/doctor.png',
+        ]);
 
         return redirect()
             ->back()
@@ -42,60 +65,38 @@ class DoctorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Update the specified resource in storage.
      */
-    public function storeUser (UserRequest $request) {
+    public function update(UpdateDoctorRequest $request, Doctor $doctor)
+    {
+        $this->authorize('update', $doctor);
 
         $validatedData = $request->validated();
 
-        $user = User::create($validatedData, [
-                'password' => bcrypt($validatedData['password']),
-                'user_type' => 'doctor',
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension(); // Gera um nome único para o arquivo
+            $imagePath = 'storage/' . $request->file('image')->storeAs('assets/images', $imageName, 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        $user = $doctor->user;
+
+        $user->update([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => ($validatedData['password'] ? bcrypt($validatedData['password']) : $user->password),
             ]
         );
 
-        return $user;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function storeDoctor (DoctorRequest $request, User $user) {
-
-        $validatedData = $request->validated();
-
-        $doctor = Doctor::create($validatedData, [
-                'user_id' => $user->id,
+        $doctor->update([
+                'address' => $validatedData['address'],
+                'phone' => $validatedData['phone'],
+                'birth_date' => $validatedData['birth_date'],
+                'cpf' => $validatedData['cpf'],
                 'specialty_id' => $request->specialty,
                 'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/doctor.png',
             ]
         );
-
-        return $doctor;
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Doctor $doctor)
-    {
-        $user = $doctor->user;
-
-        return view('doctors_management', [
-            'doctor' => $doctor, 
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Doctor $doctor)
-    {
-
-        $this->updateUser($request, $doctor);
-
-        $this->updateDoctor($request, $doctor);
 
         return redirect()
             ->route('doctors.index')
@@ -103,36 +104,15 @@ class DoctorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function updateDoctor(DoctorRequest $request, Doctor $doctor)
-    {
-        $doctor->update($request->validated(), [
-                'specialty_id' => $request->specialty,
-                'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/doctor.png',
-            ]
-        );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */ 
-    public function updateUser(UserRequest $request, Doctor $doctor)
-    {
-
-        $doctor->user->update($request->validated(), [
-                'password' => bcrypt($request->validated()['password']),
-            ]
-        );
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Doctor $doctor)
     {
+        $this->authorize('delete', $doctor);
+
+        $user = $doctor->user;
         $doctor->delete();
-        $doctor->user->delete();
+        $user->delete();
 
         return redirect()
             ->route('doctors.index')
@@ -145,7 +125,7 @@ class DoctorController extends Controller
         $user = auth()->user();
         $appointments = $user->doctor->appointments()->paginate(8);
 
-        return view('appointments', [
+        return view('doctor/appointments', [
             'appointments' => $appointments, 
             'table' => 'doctors', 
             'user' => $user

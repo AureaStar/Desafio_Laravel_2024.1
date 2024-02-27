@@ -14,7 +14,7 @@ class SpecialtyController extends Controller
         
         $specialties = Specialty::paginate(8);
 
-        return view('management', ['specialties' => $specialties, 'table' => 'specialties']);
+        return view('admin/specialties', ['specialties' => $specialties, 'table' => 'specialties']);
     }
 
     /**
@@ -22,9 +22,9 @@ class SpecialtyController extends Controller
      */
     public function store(SpecialtyRequest $request) {
 
-        $this->formatValue($request);
+        $request['value'] = floatval($request['value']);
 
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
         Specialty::create($validatedData);
 
@@ -38,9 +38,7 @@ class SpecialtyController extends Controller
      */
     public function update(SpecialtyRequest $request, Specialty $specialty) {
 
-        $this->formatValue($request);
-
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
         $specialty->update($validatedData);
 
@@ -67,13 +65,6 @@ class SpecialtyController extends Controller
         return redirect()
             ->route('specialties.index')
             ->with('success', 'Especialidade deletada com sucesso!');
-    }
-
-    public function formatValue($request): void
-    {
-        $formattedValue = preg_replace('/[^\d,]/', '', $request->input('value'));
-        $numericValue = str_replace(',', '.', $formattedValue);
-        $request->merge(['value' => $numericValue]);
     }
 
 }
