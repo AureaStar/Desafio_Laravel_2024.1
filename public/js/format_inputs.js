@@ -30,21 +30,10 @@
         campo.value = valor;
     }
 
-  function formatCurrency(input) {
+function formatVal(input) {
+
     let value = input.value.replace(/\D/g, '');
 
-    value = (parseFloat(value) / 100).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
-
     input.value = value;
-  }
 
-  function formatPercentage(input) {
-    let value = input.value.replace(/\D/g, '');
-
-    value =  
-
-    input.value = value;
-  }
+}

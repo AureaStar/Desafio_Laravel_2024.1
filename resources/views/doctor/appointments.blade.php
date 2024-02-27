@@ -25,10 +25,10 @@
                 <tbody>
                     @foreach ($appointments as $appointment)
                         <tr>
-                            <td>{{ $appointment->patient->name }}</td>
-                            <td>{{ $appointment->doctor->name }}</td>
+                            <td>{{ $appointment->patient->user->name }}</td>
+                            <td>{{ $appointment->doctor->user->name }}</td>
                             <td>{{ $appointment->specialty->name }}</td>
-                            <td>{{ $appointment->date }}</td>
+                            <td>{{ $appointment->procedure_start }}</td>
                             <td>{{ $appointment->price }}</td>
                         </tr>
                     @endforeach
@@ -36,11 +36,7 @@
             </table>
 
         </div>
-        @if ($user->user_type == 'patient')
-                <a href="{{ route('appointments.create') }}" class="btn btn-primary">Agendar Consulta</a>
-            @elseif ($user->user_type == 'doctor')
-                <!-- Gerar relatorio -->
-                <a href="{{ route('appointments.report') }}" class="btn btn-primary">Gerar Relatório</a>
-            @endif
+        <!-- Gerar relatorio -->
+        <a href="{{ route('appointments.report') }}" class="btn btn-primary">Gerar Relatório</a>
     </div>
 @stop
