@@ -110,6 +110,9 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::resource('/admin/patients', PatientController::class);
     Route::resource('/admin/specialties', SpecialtyController::class);
     Route::resource('/admin/health_plans', HealthPlanController::class);
+
+    Route::post('/admin/send_email', [AdminController::class, 'sendEmail'])
+        ->name('admin.send_email');
 });
 
 require __DIR__ . '/auth.php';

@@ -16,6 +16,7 @@ $heads = [
 <div class="box">
     <div class="box-header" style="display: flex; justify-content: space-between; padding: 10px 5px;">
         <h3 class="box-title inline text-md text-xl text-2xl-md" style="width: fit-content;">Gerenciamento de Pacientes</h3>
+        <x-adminlte-button label="Enviar Email" class="btn btn-inline btn-sm btn-md" data-toggle="modal" data-target="#emailmodal" theme="info" icon="fas fa-envelope" />
         <x-adminlte-button label="Adicionar Paciente" class="btn btn-inline btn-sm btn-md" data-toggle="modal" data-target="#add" theme="success" icon="fas fa-plus" />
     </div>
     <div class="box-body">
@@ -115,6 +116,22 @@ $heads = [
                 </x-adminlte-modal>
 
                 @endforeach
+
+                <!-- Modal de Enviar Email -->
+
+                <x-adminlte-modal id="emailmodal" title="Enviar Email" theme="info" icon="fas fa-envelope" size="lg" static-backdrop>
+                    <form action="{{ route('admin.send_email') }}" method="POST">
+                        @csrf
+                        <x-adminlte-input name="subject" label="Assunto" placeholder="Assunto" />
+                        <x-adminlte-textarea name="message" label="Mensagem" placeholder="Mensagem" rows="5" />
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-info">Enviar</button>
+                        </div>
+                    </form>
+                    <x-slot name="footerSlot">
+                    </x-slot>
+                </x-adminlte-modal>
 
                 <!-- Modal Adicionar -->
 

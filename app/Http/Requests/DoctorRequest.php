@@ -21,6 +21,7 @@ class DoctorRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             //User
             'name' => 'required|string|max:255',
@@ -34,7 +35,8 @@ class DoctorRequest extends FormRequest
             'cpf' => 'required|string|max:14|unique:doctors,cpf',
             'work_period' => 'required|string|in:morning,afternoon,night,dawn',
             'crm' => 'required|string|max:255',
-            'image' => 'string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'specialty' => 'required',
         ];
     }
 }

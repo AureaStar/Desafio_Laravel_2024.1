@@ -55,7 +55,7 @@ class DoctorController extends Controller
             'cpf' => $validatedData['cpf'],
             'crm' => $validatedData['crm'],
             'phone' => $validatedData['phone'],
-            'specialty_id' => $request->specialty,
+            'specialty_id' => $validatedData['specialty'],
             'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/doctor.png',
         ]);
 
@@ -92,6 +92,8 @@ class DoctorController extends Controller
                 'address' => $validatedData['address'],
                 'phone' => $validatedData['phone'],
                 'birth_date' => $validatedData['birth_date'],
+                'crm' => $validatedData['crm'],
+                'work_period' => $validatedData['work_period'], // 'work_period' => 'morning', 'afternoon', 'night', 'dawn
                 'cpf' => $validatedData['cpf'],
                 'specialty_id' => $request->specialty,
                 'image' => isset($validatedData['image']) ? $validatedData['image'] : 'assets/doctor.png',
