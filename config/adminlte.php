@@ -362,7 +362,7 @@ return [
             'icon' => 'fas fa-solid fa-calendar-check',
             'topnav' => true,
             'classes' => 'd-md-block d-none',
-            'can' => 'patient',
+            'can' => ['patient', 'completed'],
         ],
         [
             'text' => '',
@@ -378,7 +378,7 @@ return [
             'icon' => 'fas fa-solid fa-user',
             'topnav' => true,
             'classes' => 'd-md-block d-none',
-            'can' => 'patient',
+            'can' => ['patient', 'completed'],
         ],
 
         // Sidebar items:
@@ -409,7 +409,7 @@ return [
             'text' => 'Perfil',
             'url'  => 'patient/profile',
             'icon' => 'fas fa-fw fa-user',
-            'can' => 'patient',
+            'can' => ['patient', 'completed'],
         ],
         // [
         //     'text' => 'change_password',
@@ -453,7 +453,7 @@ return [
                 [
                     'text' => 'Consultas',
                     'url'  => 'patients/appointments',
-                    'can' => 'patient',
+                    'can' => ['patient', 'completed'],
                 ]
             ],
         ],

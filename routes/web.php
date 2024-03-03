@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AdminController, AppointmentController, DoctorController, HealthPlanController, PatientController, PatientProfileController, ProfileController, SpecialtyController, DoctorProfileController};
+use App\Http\Controllers\{AdminController, AppointmentController, DoctorController, HealthPlanController, PatientController, PatientProfileController, ProfileController, SpecialtyController, DoctorProfileController, PatientSelfController};
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -16,26 +16,31 @@ use Barryvdh\DomPDF\Facade\Pdf;
 |
 */
 
+Route::get('', function () {
+    return redirect(route('home'));
+});
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('', function () {
+    Route::get('/', function () {
         if (auth()->user()->user_type === 'admin') {
             return redirect(route('admin.index'));
         }
         elseif (auth()->user()->user_type === 'doctor') {
             return redirect(route('doctor.appointments'));
         }
-        elseif (auth()->user()->user_type === 'patient') {
+        elseif (auth()->user()->user_type === 'patient' && auth()->user()->patient->registration_status === 'complete') {
             return redirect(route('patients.appointments.index'));
         }
-    });
+        elseif (auth()->user()->user_type === 'patient' && auth()->user()->patient->registration_status === 'incomplete') {
+            return redirect('/dashboard/patient');
+        };
+    })
+        ->name('home');
 
     Route::get('/dashboard/doctors', [DoctorController::class, 'dashboard'])
         ->name('dashboard.doctors');
-
-    Route::get('/dashboard/patients', [PatientController::class, 'dashboard'])
-        ->name('dashboard.patients');
 });
 
 Route::middleware('auth')->group(function () {
@@ -65,11 +70,25 @@ Route::middleware(['auth', 'verified', 'doctor'])->group(function () {
 
     Route::get('/appointments/report', [AppointmentController::class, 'report'])
         ->name('appointments.report');
+
 });
 
 // Rotas de Pacientes
 
-Route::middleware(['auth', 'verified', 'patient'])->group(function () {
+Route::middleware(['auth', 'verified', 'patient', 'incomplete'])->group(function () {
+
+    Route::get('/dashboard/patient', [PatientSelfController::class, 'index'])
+        ->name('patient.index');
+
+    Route::get('/patient/complete', [PatientSelfController::class, 'edit'])
+        ->name('patient.complete');
+
+    Route::patch('/patient/completed', [PatientSelfController::class, 'update'])
+        ->name('patient.completed');
+
+});
+
+Route::middleware(['auth', 'verified', 'patient', 'completed'])->group(function () {
 
     Route::get('/patient', function () {
         return redirect(route('patients.appointments.index'));
