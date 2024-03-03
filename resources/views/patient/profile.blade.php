@@ -22,4 +22,19 @@
         <x-adminlte-profile-row-item icon="fas fa-fw fa-tint" title="Tipo Sanguíneo" text="{{$user->patient->blood_type}}"
             url="profile/edit"/>
     </x-adminlte-profile-widget>
+    <x-adminlte-button label="Deletar Conta" theme="danger" icon="fas fa-trash" class="mt-2" data-toggle="modal"
+        data-target="#modal-danger" />
+    <x-adminlte-modal id="modal-danger" title="Deletar Conta" theme="danger" icon="fas fa-trash" static-backdrop
+        btn-dismiss="Cancelar">
+        Tem certeza que deseja deletar sua conta? Esta ação é irreversível.
+        <x-slot name="footerSlot">
+            <x-adminlte-button theme="danger" label="Deletar" icon="fas fa-trash" class="float-right"
+                onclick="event.preventDefault();document.getElementById('delete-form').submit();" />
+            <form id="delete-form" action="{{route('patient.destroy')}}" method="POST"
+                style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
+        </x-slot>
+    </x-adminlte-modal>
 @stop

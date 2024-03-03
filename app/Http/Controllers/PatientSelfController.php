@@ -25,30 +25,6 @@ class PatientSelfController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Patient $patient)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request)
@@ -101,12 +77,5 @@ class PatientSelfController extends Controller
         $patient->save();
 
         return Redirect::route('patient.profile')->with('status', 'profile-updated');
-    }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Patient $patient)
-    {
-        //
     }
 }

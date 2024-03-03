@@ -75,4 +75,15 @@ class PatientProfileController extends Controller
 
         return Redirect::route('patient.profile')->with('status', 'profile-updated');
     }
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+        $patient = $user->patient;
+        $patient->delete();
+        $user->delete();
+
+        return redirect()
+            ->route('home');
+    }
 }

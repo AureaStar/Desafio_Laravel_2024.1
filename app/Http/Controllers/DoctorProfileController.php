@@ -72,4 +72,14 @@ class DoctorProfileController extends Controller
 
         return Redirect::route('doctor.profile')->with('status', 'profile-updated');
     }
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+        $doctor = $user->doctor;
+        $doctor->delete();
+        $user->delete();
+
+        return Redirect::route('home');
+    }
 }

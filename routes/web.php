@@ -65,6 +65,9 @@ Route::middleware(['auth', 'verified', 'doctor'])->group(function () {
     Route::patch('/doctor/profile', [DoctorProfileController::class, 'update'])
        ->name('doctor.update');
 
+    Route::delete('/doctor/profile', [DoctorProfileController::class, 'destroy'])
+         ->name('doctor.destroy');
+
     Route::get('/doctor/appointments', [DoctorController::class, 'appointments'])
         ->name('doctor.appointments');
 
@@ -102,6 +105,9 @@ Route::middleware(['auth', 'verified', 'patient', 'completed'])->group(function 
 
     Route::patch('/patient/profile', [PatientProfileController::class, 'update'])
         ->name('patient.update');
+
+    Route::delete('/patient/profile', [PatientProfileController::class, 'destroy'])
+        ->name('patient.destroy');
 
     Route::get('/patients/appointments/view', [PatientController::class, 'appointments'])
         ->name('patients.appointments');
