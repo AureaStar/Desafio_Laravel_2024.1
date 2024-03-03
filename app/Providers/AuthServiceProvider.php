@@ -42,5 +42,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('patient', function ($user) {
             return $user->user_type === 'patient';
         });
+
+        Gate::define('completed', function ($user) {
+            return $user->user_type === 'patient' && $user->patient->registration_status === 'complete';
+        });
+
+        Gate::define('incomplete', function($user) {
+            return $user->user_type === 'patient' && $user->patient->registration_status === 'incomplete';
+        });
     }
 }

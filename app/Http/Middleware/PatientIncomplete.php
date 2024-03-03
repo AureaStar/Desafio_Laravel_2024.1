@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Doctor
+class PatientIncomplete
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class Doctor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->user_type != 'doctor') {
-            return redirect()->route('home')->with('error', 'Você não tem permissão para acessar essa página');
+        if ($request->user()->patient->registration_status != 'incomplete') {
+            return redirect()->route('patient.appointments.index')->with('error', 'Seu cadastrado já está completo');
         }
         return $next($request);
     }

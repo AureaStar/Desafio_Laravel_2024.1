@@ -16,7 +16,7 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user()->user_type != 'admin') {
-            abort(403);
+            return redirect()->route('home')->with('error', 'Você não tem permissão para acessar essa página');
         }
         return $next($request);
     }
