@@ -24,6 +24,12 @@ class AppointmentController extends Controller
         $specialty = Specialty::find($specialtyid);
         $date = $request->date;
         $time = $request->time;
+        $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i', $date . ' ' . $time, 'America/Sao_Paulo');
+        $now = Carbon::now('America/Sao_Paulo');
+
+        if ($appointmentDateTime->isBefore($now)) {
+            return redirect(route('patients.appointments'))->with('error', 'Não é possível agendar para um horário passado.');
+        }
         $final_time = date('H:i', strtotime($time . ' +2 hours'));
         $health_plan = auth()->user()->patient->health_plan;
         $valor = $specialty->value - ($specialty->value * ($health_plan->discount / 100));
@@ -81,13 +87,13 @@ class AppointmentController extends Controller
         $valorNumerico = intval($hora) * 100 + intval($minuto);
 
         if ($valorNumerico >= 0 && $valorNumerico < 600) {
-            return 'Dawn'; // Madrugada
+            return 'dawn'; // Madrugada
         } elseif ($valorNumerico >= 600 && $valorNumerico < 1200) {
-            return 'Morning'; // Manhã
+            return 'morning'; // Manhã
         } elseif ($valorNumerico >= 1200 && $valorNumerico < 1800) {
-            return 'Afternoon'; // Tarde
+            return 'afternoon'; // Tarde
         } elseif ($valorNumerico >= 1800 && $valorNumerico < 2400) {
-            return 'Night'; // Noite
+            return 'night'; // Noite
         } else {
             return 'Invalid period'; // Período inválido
         }
@@ -95,6 +101,20 @@ class AppointmentController extends Controller
 
     public function destroy(Appointment $appointment)
     {
+        $now = Carbon::now()->setTimezone('America/Sao_Paulo');
+        $appointmentDate = Carbon::parse($appointment->procedure_start, 'America/Sao_Paulo');
+
+        // Calcula a diferença em dias
+        $daysUntilAppointment = $now->diffInDays($appointmentDate, false);
+
+        // Verifica se o agendamento já ocorreu
+        if ($appointment->procedure_end < $now->format('Y-m-d H:i:s')) {
+            return redirect(route('patients.appointments'))->with('error', 'Não é possível excluir um agendamento que já foi realizado.');
+        // Verifica se a tentativa de cancelamento ocorre menos de 3 dias antes
+        } elseif ($daysUntilAppointment < 3) {
+            return redirect(route('patients.appointments'))->with('error', 'Não é possível cancelar o agendamento com menos de 3 dias de antecedência.');
+        }
+
         $appointment->delete();
 
         return redirect(route('patients.appointments'))->with('success', 'Agendamento excluído com sucesso!');

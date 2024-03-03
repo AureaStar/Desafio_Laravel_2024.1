@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{Patient, User, Health_plan, Specialty};
 use Illuminate\Http\Request;
 use App\Http\Requests\{PatientRequest, UserRequest, UpdatePatientRequest};
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
@@ -124,11 +125,13 @@ class PatientController extends Controller
     {
         $user = auth()->user();
         $patient = $user->patient;
+        $now = Carbon::now();
+        $futureAppointments = $patient->appointments()->where('procedure_start', '>', $now)->get();
 
         return view('patient/appointments', [
             'user' => $user, 
             'specialties' => Specialty::all(),
-            'appointments' => $patient->appointments
+            'appointments' => $futureAppointments
         ]);
     }
 }
