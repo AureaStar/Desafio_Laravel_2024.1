@@ -65,7 +65,7 @@ $heads = [
                     <x-adminlte-input name="date" label="Data" placeholder="Data" value="{{ $appointment->procedure_start }}" disabled />
                     <x-adminlte-input name="hour" label="Hora" placeholder="Hora" value="{{ $appointment->procedure_end }}" disabled />
                     <x-adminlte-input name="doctor" label="Médico" placeholder="Médico" value="{{ $appointment->doctor->user->name }}" disabled />
-                    <x-adminlte-input name="value" label="Valor (R$)" placeholder="Valor (R$)" value="{{ $appointment->specialty->value }}" disabled />
+                    <x-adminlte-input name="value" label="Valor (R$)" placeholder="Valor (R$)" value="{{ $appointment->price }}" disabled />
                     <x-adminlte-input name="status" label="Status" placeholder="Status" value="{{ $appointment->status }}" disabled />
                 </x-adminlte-modal>
 
@@ -76,20 +76,21 @@ $heads = [
                 <x-adminlte-modal id="add" title="Novo Agendamento" theme="teal" icon="fas fa-stethoscope" size="lg" static-backdrop>
                     <form action="{{ route('patients.appointments.create') }}" method="POST">
                         @csrf
-                        <x-adminlte-select2 name="specialty_id" label="Especialidade" fgroup-class="col-md-12" data-placeholder="Selecione uma especialidade">
+                        <x-adminlte-select2 required name="specialty_id" label="Especialidade" fgroup-class="col-md-12" data-placeholder="Selecione uma especialidade">
                             <option value="" disabled selected>Selecione</option>
                             @foreach ($specialties as $specialty)
                             <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
                             @endforeach
                         </x-adminlte-select2>
                         <x-adminlte-input 
+                            required
                             name="date" 
                             label="Data" 
                             type="date" 
                             fgroup-class="col-md-12" 
                             placeholder="Data" 
                         />
-                        <x-adminlte-select2 name="time" label="Horário">
+                        <x-adminlte-select2 required name="time" label="Horário">
                             <option value="" disabled selected>Selecione</option>
                             <option value="00:00">00:00</option>
                             <option value="02:00">02:00</option>

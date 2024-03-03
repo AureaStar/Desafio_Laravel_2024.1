@@ -81,20 +81,20 @@ $heads = [
                     <form action="{{ route('patients.update', $user->patient->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" value="{{ $user->name }}" />
-                        <x-adminlte-input name="email" label="E-mail" placeholder="E-mail" value="{{ $user->email }}" />
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" value="{{ $user->name }}" />
+                        <x-adminlte-input required name="email" label="E-mail" placeholder="E-mail" value="{{ $user->email }}" />
                         <x-adminlte-input type="password" name="password" label="Senha" placeholder="Senha" />
-                        <x-adminlte-input name="cpf" label="CPF" placeholder="CPF" value="{{ $user->patient->cpf }}" oninput="formatarCpf(this)"/>
-                        <x-adminlte-input name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" value="{{ $user->patient->birth_date }}" />
-                        <x-adminlte-input name="phone" label="Telefone" placeholder="Telefone" value="{{ $user->patient->phone }}" oninput="formatarTelefone(this)" />
-                        <x-adminlte-input name="address" label="Endereço" placeholder="Endereço" value="{{ $user->patient->address }}" />
-                        <x-adminlte-select name="health_plan" label="Plano de Saúde" placeholder="Plano de Saúde" value="{{ $user->patient->health_plan_id }}" >
+                        <x-adminlte-input required name="cpf" label="CPF" placeholder="CPF" value="{{ $user->patient->cpf }}" oninput="formatarCpf(this)"/>
+                        <x-adminlte-input required name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" value="{{ $user->patient->birth_date }}" />
+                        <x-adminlte-input required name="phone" label="Telefone" placeholder="Telefone" value="{{ $user->patient->phone }}" oninput="formatarTelefone(this)" />
+                        <x-adminlte-input required name="address" label="Endereço" placeholder="Endereço" value="{{ $user->patient->address }}" />
+                        <x-adminlte-select required name="health_plan" label="Plano de Saúde" placeholder="Plano de Saúde" value="{{ $user->patient->health_plan_id }}" >
                             <option value="" disabled selected>Selecione</option>
                             @foreach ($health_plans as $health_plan)
                             <option value="{{ $health_plan->id }}">{{ $health_plan->name }}</option>
                             @endforeach
                         </x-adminlte-select>
-                        <x-adminlte-select name="blood_type" label="Tipo Sanguíneo" placeholder="Tipo Sanguíneo" value="{{ $user->patient->blood_type }}" >
+                        <x-adminlte-select required name="blood_type" label="Tipo Sanguíneo" placeholder="Tipo Sanguíneo" value="{{ $user->patient->blood_type }}" >
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -122,8 +122,8 @@ $heads = [
                 <x-adminlte-modal id="emailmodal" title="Enviar Email" theme="info" icon="fas fa-envelope" size="lg" static-backdrop>
                     <form action="{{ route('admin.send_email') }}" method="POST">
                         @csrf
-                        <x-adminlte-input name="subject" label="Assunto" placeholder="Assunto" />
-                        <x-adminlte-textarea name="message" label="Mensagem" placeholder="Mensagem" rows="5" />
+                        <x-adminlte-input required name="subject" label="Assunto" placeholder="Assunto" />
+                        <x-adminlte-textarea required name="message" label="Mensagem" placeholder="Mensagem" rows="5" />
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                             <button type="submit" class="btn btn-info">Enviar</button>
@@ -138,20 +138,20 @@ $heads = [
                 <x-adminlte-modal id="add" title="Adicionar Paciente" theme="success" icon="fas fa-user-injured" size="lg" static-backdrop>
                     <form action="{{ route('patients.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" />
-                        <x-adminlte-input type="email" name="email" label="E-mail" placeholder="E-mail" />
-                        <x-adminlte-input type="password" name="password" label="Senha" placeholder="Senha" />
-                        <x-adminlte-input name="cpf" label="CPF" placeholder="CPF" oninput="formatarCpf(this)"/>
-                        <x-adminlte-input type="date" name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" />
-                        <x-adminlte-input name="phone" label="Telefone" placeholder="Telefone" oninput="formatarTelefone(this)" />
-                        <x-adminlte-input name="address" label="Endereço" placeholder="Endereço" />
-                        <x-adminlte-select name="health_plan_id" label="Plano de Saúde" placeholder="Plano de Saúde" >
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" />
+                        <x-adminlte-input required type="email" name="email" label="E-mail" placeholder="E-mail" />
+                        <x-adminlte-input required type="password" name="password" label="Senha" placeholder="Senha" />
+                        <x-adminlte-input required name="cpf" label="CPF" placeholder="CPF" oninput="formatarCpf(this)"/>
+                        <x-adminlte-input required type="date" name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" />
+                        <x-adminlte-input required name="phone" label="Telefone" placeholder="Telefone" oninput="formatarTelefone(this)" />
+                        <x-adminlte-input required name="address" label="Endereço" placeholder="Endereço" />
+                        <x-adminlte-select required name="health_plan_id" label="Plano de Saúde" placeholder="Plano de Saúde" >
                             <option value="" disabled selected>Selecione</option>
                             @foreach ($health_plans as $health_plan)
                             <option value="{{ $health_plan->id }}">{{ $health_plan->name }}</option>
                             @endforeach
                         </x-adminlte-select>
-                        <x-adminlte-select name="blood_type" label="Tipo Sanguíneo" placeholder="Tipo Sanguíneo" >
+                        <x-adminlte-select required name="blood_type" label="Tipo Sanguíneo" placeholder="Tipo Sanguíneo" >
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>

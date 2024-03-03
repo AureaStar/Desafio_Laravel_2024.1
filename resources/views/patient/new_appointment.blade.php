@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label for="doctor">Médico</label>
-                <select class="form-control" id="doctor" name="doctor_id">
+                <select required class="form-control" id="doctor" name="doctor_id">
                     <option value="" disabled selected>Selecione</option>
                     @foreach ($doctors as $doctor)
                     <option value="{{ $doctor->id }}">{{ $doctor->user->name }}</option>

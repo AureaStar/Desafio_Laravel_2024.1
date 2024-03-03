@@ -81,21 +81,21 @@ $heads = [
                     <form action="{{ route('doctors.update', $user->doctor->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" value="{{ $user->name }}" />
-                        <x-adminlte-input name="email" label="E-mail" placeholder="E-mail" value="{{ $user->email }}" />
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" value="{{ $user->name }}" />
+                        <x-adminlte-input required name="email" label="E-mail" placeholder="E-mail" value="{{ $user->email }}" />
                         <x-adminlte-input name="password" label="Senha" placeholder="Senha" type="password" />
-                        <x-adminlte-input name="cpf" label="CPF" placeholder="CPF" value="{{ $user->doctor->cpf }}" oninput="formatarCpf(this)"/>
-                        <x-adminlte-input name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" value="{{ $user->doctor->birth_date }}" />
-                        <x-adminlte-input name="phone" label="Telefone" placeholder="Telefone" value="{{ $user->doctor->phone }}" oninput="formatarTelefone(this)" />
-                        <x-adminlte-input name="address" label="Endereço" placeholder="Endereço" value="{{ $user->doctor->address }}" />
-                        <x-adminlte-input name="crm" label="CRM" placeholder="CRM" value="{{ $user->doctor->crm }}" />
-                        <x-adminlte-select name="work_period" label="Período de Trabalho" placeholder="Período de Trabalho" value="{{ $user->doctor->work_period }}" >
+                        <x-adminlte-input required name="cpf" label="CPF" placeholder="CPF" value="{{ $user->doctor->cpf }}" oninput="formatarCpf(this)"/>
+                        <x-adminlte-input required name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" value="{{ $user->doctor->birth_date }}" />
+                        <x-adminlte-input required name="phone" label="Telefone" placeholder="Telefone" value="{{ $user->doctor->phone }}" oninput="formatarTelefone(this)" />
+                        <x-adminlte-input required name="address" label="Endereço" placeholder="Endereço" value="{{ $user->doctor->address }}" />
+                        <x-adminlte-input required name="crm" label="CRM" placeholder="CRM" value="{{ $user->doctor->crm }}" />
+                        <x-adminlte-select required name="work_period" label="Período de Trabalho" placeholder="Período de Trabalho" value="{{ $user->doctor->work_period }}" >
                             <option value="morning">Manhã</option>
                             <option value="afternoon">Tarde</option>
                             <option value="night">Noite</option>
                             <option value="dawn">Madrugada</option>
                         </x-adminlte-select>
-                        <x-adminlte-select name="specialty" label="Especialidade" placeholder="Especialidade" >
+                        <x-adminlte-select required name="specialty" label="Especialidade" placeholder="Especialidade" >
                             @foreach ($specialties as $specialty)
                             <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
                             @endforeach
@@ -118,21 +118,21 @@ $heads = [
                 <x-adminlte-modal id="add" title="Adicionar Médico" theme="success" icon="fas fa-user-md" size="lg" static-backdrop>
                     <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" />
-                        <x-adminlte-input name="email" label="E-mail" placeholder="E-mail" />
-                        <x-adminlte-input name="password" label="Senha" placeholder="Senha" type="password" />
-                        <x-adminlte-input name="cpf" label="CPF" placeholder="CPF" oninput="formatarCpf(this)"/>
-                        <x-adminlte-input type="date" name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" />
-                        <x-adminlte-input name="phone" label="Telefone" placeholder="Telefone" oninput="formatarTelefone(this)" />
-                        <x-adminlte-input name="address" label="Endereço" placeholder="Endereço" />
-                        <x-adminlte-input name="crm" label="CRM" placeholder="CRM" />
-                        <x-adminlte-select name="work_period" label="Período de Trabalho" placeholder="Período de Trabalho" >
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" />
+                        <x-adminlte-input required name="email" label="E-mail" placeholder="E-mail" />
+                        <x-adminlte-input required name="password" label="Senha" placeholder="Senha" type="password" />
+                        <x-adminlte-input required name="cpf" label="CPF" placeholder="CPF" oninput="formatarCpf(this)"/>
+                        <x-adminlte-input required type="date" name="birth_date" label="Data de Nascimento" placeholder="Data de Nascimento" />
+                        <x-adminlte-input required name="phone" label="Telefone" placeholder="Telefone" oninput="formatarTelefone(this)" />
+                        <x-adminlte-input required name="address" label="Endereço" placeholder="Endereço" />
+                        <x-adminlte-input required name="crm" label="CRM" placeholder="CRM" />
+                        <x-adminlte-select required name="work_period" label="Período de Trabalho" placeholder="Período de Trabalho" >
                             <option value="morning">Manhã</option>
                             <option value="afternoon">Tarde</option>
                             <option value="night">Noite</option>
                             <option value="dawn">Madrugada</option>
                         </x-adminlte-select>
-                        <x-adminlte-select name="specialty" label="Especialidade" placeholder="Especialidade" >
+                        <x-adminlte-select required name="specialty" label="Especialidade" placeholder="Especialidade" >
                             @foreach ($specialties as $specialty)
                             <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
                             @endforeach

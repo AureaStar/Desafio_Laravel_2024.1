@@ -74,9 +74,9 @@ $heads = [
                     <form action="{{ route('specialties.update', $specialty->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" value="{{ $specialty->name }}" />
-                        <x-adminlte-input name="description" label="Descrição" placeholder="Descrição" value="{{ $specialty->description }}" />
-                        <x-adminlte-input name="value" label="Valor (R$)" placeholder="Valor (R$)" value="{{ $specialty->value }}" oninput="formatCurrency(this)"/>
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" value="{{ $specialty->name }}" />
+                        <x-adminlte-input required name="description" label="Descrição" placeholder="Descrição" value="{{ $specialty->description }}" />
+                        <x-adminlte-input required name="value" label="Valor (R$)" placeholder="Valor (R$)" value="{{ $specialty->value }}" oninput="formatCurrency(this)"/>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
@@ -93,9 +93,9 @@ $heads = [
                 <x-adminlte-modal id="add" title="Adicionar Especialidade" theme="success" icon="fas fa-stethoscope" size="lg" static-backdrop>
                     <form action="{{ route('specialties.store') }}" method="POST">
                         @csrf
-                        <x-adminlte-input name="name" label="Nome" placeholder="Nome" />
-                        <x-adminlte-input name="description" label="Descrição" placeholder="Descrição" />
-                        <x-adminlte-input name="value" label="Valor (R$)" placeholder="Valor (R$)" oninput="formatCurrency(this)" />
+                        <x-adminlte-input required name="name" label="Nome" placeholder="Nome" />
+                        <x-adminlte-input required name="description" label="Descrição" placeholder="Descrição" />
+                        <x-adminlte-input required name="value" label="Valor (R$)" placeholder="Valor (R$)" oninput="formatCurrency(this)" />
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-success">Adicionar</button>

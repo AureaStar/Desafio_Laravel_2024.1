@@ -36,7 +36,10 @@
             </table>
 
         </div>
-        <!-- Gerar relatorio -->
-        <a href="{{ route('appointments.report') }}" class="btn btn-primary">Gerar Relatório</a>
-    </div>
+            <!-- Gerar relatorio -->
+            <a href="{{ route('appointments.report') }}" class="btn btn-primary">Gerar Relatório</a>
+        </div>
+        @component('components.alerts')
+            
+        @endcomponent
 @stop
