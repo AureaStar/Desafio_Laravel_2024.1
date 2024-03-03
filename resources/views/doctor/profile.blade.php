@@ -20,6 +20,9 @@
         <x-adminlte-profile-row-item icon="fas fa-fw fa-id-card" title="CPF" text="{{$user->doctor->cpf}}"
             url="profile/edit"/>
     </x-adminlte-profile-widget>
+    @component('components.alerts')
+        
+    @endcomponent
     <x-adminlte-button label="Deletar Conta" theme="danger" icon="fas fa-trash" class="mt-2" data-toggle="modal"
         data-target="#modal-danger" />
     <x-adminlte-modal id="modal-danger" title="Deletar Conta" theme="danger" icon="fas fa-trash" static-backdrop

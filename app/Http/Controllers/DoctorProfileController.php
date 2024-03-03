@@ -70,13 +70,18 @@ class DoctorProfileController extends Controller
 
         $doctor->save();
 
-        return Redirect::route('doctor.profile')->with('status', 'profile-updated');
+        return Redirect::route('doctor.profile')->with('success', 'Perfil atualizado com sucesso.');
     }
 
     public function destroy(Request $request)
     {
         $user = $request->user();
         $doctor = $user->doctor;
+
+        if ($doctor->appointments->count() > 0) {
+            return Redirect::route('doctor.profile')->with('error', 'Esta conta não pode ser deletada pois possui consultas marcadas.');
+        }
+
         $doctor->delete();
         $user->delete();
 

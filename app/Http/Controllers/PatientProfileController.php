@@ -73,13 +73,18 @@ class PatientProfileController extends Controller
 
         $patient->save();
 
-        return Redirect::route('patient.profile')->with('status', 'profile-updated');
+        return Redirect::route('patient.profile')->with('success', 'Perfil atualizado com sucesso.');
     }
 
     public function destroy(Request $request)
     {
         $user = $request->user();
         $patient = $user->patient;
+
+        if ($patient->appointments->count() > 0) {
+            return Redirect::route('patient.profile')->with('error', 'Você não pode excluir seu perfil enquanto tiver consultas agendadas.');
+        }
+
         $patient->delete();
         $user->delete();
 
