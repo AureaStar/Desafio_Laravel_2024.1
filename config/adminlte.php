@@ -350,7 +350,7 @@ return [
         ],
         [
             'text' => '',
-            'url'  => 'doctors/appointments',
+            'url'  => 'doctor/appointments',
             'icon' => 'fas fa-solid fa-calendar-check',
             'topnav' => true,
             'classes' => 'd-md-block d-none',
@@ -391,13 +391,6 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
-        // [
-        //     'text'        => 'pages',
-        //     'url'         => 'admin/pages',
-        //     'icon'        => 'far fa-fw fa-file',
-        //     'label'       => 4,
-        //     'label_color' => 'success',
-        // ],
         ['header' => 'account_settings'],
         [
             'text' => 'Perfil',
@@ -411,11 +404,6 @@ return [
             'icon' => 'fas fa-fw fa-user',
             'can' => ['patient', 'completed'],
         ],
-        // [
-        //     'text' => 'change_password',
-        //     'url'  => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-lock',
-        // ],
         [
             'text'    => 'Páginas',
             'icon'    => 'fas fa-fw fa-share',
@@ -447,7 +435,7 @@ return [
                 ],
                 [
                     'text' => 'Consultas',
-                    'url'  => 'doctors/appointments',
+                    'url'  => 'doctor/appointments',
                     'can' => 'doctor',
                 ],
                 [
