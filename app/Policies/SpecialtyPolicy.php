@@ -48,20 +48,4 @@ class SpecialtyPolicy
     {
         return $user->user_type === 'admin';
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    // public function restore(User $user, Specialty $specialty): bool
-    // {
-    //     //
-    // }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    // public function forceDelete(User $user, Specialty $specialty): bool
-    // {
-    //     //
-    // }
 }

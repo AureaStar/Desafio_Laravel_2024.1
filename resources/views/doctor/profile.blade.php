@@ -1,3 +1,5 @@
+@can('doctor')
+
 @extends('adminlte::page')
 
 @section('content')
@@ -34,3 +36,5 @@
         </x-slot>
     </x-adminlte-modal>
 @stop
+
+@endcan

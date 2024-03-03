@@ -47,20 +47,4 @@ class DoctorPolicy
     {
         return $user->user_type === 'admin' || $user->id === $doctor->user_id;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    // public function restore(User $user, Doctor $doctor): bool
-    // {
-        
-    // }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    // public function forceDelete(User $user, Doctor $doctor): bool
-    // {
-    //     //
-    // }
 }
