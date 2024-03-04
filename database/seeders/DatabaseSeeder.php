@@ -18,5 +18,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@starlight.com',
             'user_type' => 'admin',
         ]);
+        $this->call([
+            HealthPlanSeeder::class,
+            SpecialtySeeder::class,
+            DoctorSeeder::class,
+            PatientSeeder::class,
+        ]);
     }
 }
