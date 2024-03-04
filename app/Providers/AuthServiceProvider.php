@@ -4,13 +4,12 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\Doctor;
-use App\Models\Patient;
-use App\Policies\PatientPolicy;
-use App\Policies\DoctorPolicy;
+use App\Models\{Appointment, Doctor, Health_plan, Patient, Specialty};
+use App\Policies\{AppointmentPolicy, DoctorPolicy, Health_planPolicy, PatientPolicy, SpecialtyPolicy};
 use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\App;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,6 +21,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Patient::class => PatientPolicy::class,
         Doctor::class => DoctorPolicy::class,
+        Specialty::class => SpecialtyPolicy::class,
+        Health_plan::class => Health_planPolicy::class,
+        Appointment::class => AppointmentPolicy::class,
     ];
 
     /**
